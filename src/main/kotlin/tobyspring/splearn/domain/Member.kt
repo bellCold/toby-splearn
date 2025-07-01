@@ -1,14 +1,18 @@
 package tobyspring.splearn.domain
 
 class Member(
-    val email: String,
+    val email: Email,
     var nickname: String,
-    val passwordHash: String,
+    var passwordHash: String,
     var status: MemberStatus = MemberStatus.PENDING,
 ) {
     companion object {
-        fun create(email: String, nickname: String, password: String, passwordEncoder: PasswordEncoder): Member {
-            return Member(email, nickname, passwordEncoder.encode(password))
+        fun create(memberCreateRequest: MemberCreateRequest, passwordEncoder: PasswordEncoder): Member {
+            return Member(
+                Email(memberCreateRequest.email),
+                memberCreateRequest.nickname,
+                passwordEncoder.encode(memberCreateRequest.password)
+            )
         }
     }
 
@@ -30,6 +34,14 @@ class Member(
 
     fun changeNickname(newNickname: String) {
         this.nickname = newNickname
+    }
+
+    fun changePassword(password: String, passwordEncoder: PasswordEncoder) {
+        this.passwordHash = passwordEncoder.encode(password)
+    }
+
+    fun isActive(): Boolean {
+        return this.status == MemberStatus.ACTIVE
     }
 
 }

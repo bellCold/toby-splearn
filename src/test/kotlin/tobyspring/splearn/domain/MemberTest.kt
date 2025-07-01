@@ -20,7 +20,7 @@ class MemberTest {
                 return encode(password) == passwordHash
             }
         }
-        member = Member.create("toby@splearn.app", "Toby", "secret", passwordEncoder)
+        member = Member.create(MemberCreateRequest("toby@splearn.app", "Toby", "secret"), passwordEncoder)
     }
 
     @Test
@@ -69,6 +69,38 @@ class MemberTest {
     @Test
     fun changeNickname() {
         assertThat(member.nickname).isEqualTo("Toby")
-        member.changeNickname("change")
+        member.changeNickname("changeNickname")
+
+        assertThat(member.nickname).isEqualTo("changeNickname")
+    }
+
+    @Test
+    fun changePassword() {
+        member.changePassword("verySecret", passwordEncoder)
+
+        assertThat(member.verifyPassword("verySecret", passwordEncoder)).isTrue()
+    }
+
+    @Test
+    fun isActive() {
+        assertThat(member.isActive()).isFalse()
+
+        member.activate()
+
+        assertThat(member.isActive()).isTrue()
+
+        member.deactivate()
+
+        assertThat(member.isActive()).isFalse()
+    }
+
+    @Test
+    fun invalidEmail() {
+        assertThatThrownBy {
+            Member.create(MemberCreateRequest("invalid email", "Bell", "secret"), passwordEncoder)
+        }.isInstanceOf(IllegalArgumentException::class.java)
+
+        Member.create(MemberCreateRequest("bell420@gmail.com", "Bell", "secret"), passwordEncoder)
     }
 }
+
