@@ -1,17 +1,23 @@
 package tobyspring.splearn.domain
 
+import jakarta.persistence.*
+
+@Entity
 class Member(
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    val id: Long = 0L,
     val email: Email,
     var nickname: String,
     var passwordHash: String,
+    @Enumerated(EnumType.STRING)
     var status: MemberStatus = MemberStatus.PENDING,
 ) {
     companion object {
-        fun create(memberCreateRequest: MemberCreateRequest, passwordEncoder: PasswordEncoder): Member {
+        fun register(memberRegisterRequest: MemberRegisterRequest, passwordEncoder: PasswordEncoder): Member {
             return Member(
-                Email(memberCreateRequest.email),
-                memberCreateRequest.nickname,
-                passwordEncoder.encode(memberCreateRequest.password)
+                email = Email(memberRegisterRequest.email),
+                nickname = memberRegisterRequest.nickname,
+                passwordHash = passwordEncoder.encode(memberRegisterRequest.password)
             )
         }
     }
@@ -43,7 +49,6 @@ class Member(
     fun isActive(): Boolean {
         return this.status == MemberStatus.ACTIVE
     }
-
 }
 
 enum class MemberStatus {
