@@ -5,4 +5,5 @@ import tobyspring.splearn.domain.Member
 
 interface MemberRepository : Repository<Member, Long> {
     fun save(member: Member): Member
+    fun findByEmail(email: String): MutableList<Member>
 }
