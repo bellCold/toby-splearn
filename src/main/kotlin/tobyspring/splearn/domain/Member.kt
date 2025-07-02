@@ -1,12 +1,16 @@
 package tobyspring.splearn.domain
 
 import jakarta.persistence.*
+import org.hibernate.annotations.NaturalId
+import org.hibernate.annotations.NaturalIdCache
 
 @Entity
+@NaturalIdCache
 class Member(
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Long = 0L,
     val email: Email,
+    @NaturalId
     var nickname: String,
     var passwordHash: String,
     @Enumerated(EnumType.STRING)

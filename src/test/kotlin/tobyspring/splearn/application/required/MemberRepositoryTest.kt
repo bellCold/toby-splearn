@@ -2,6 +2,8 @@ package tobyspring.splearn.application.required
 
 import jakarta.persistence.EntityManager
 import org.assertj.core.api.Assertions.assertThat
+import org.assertj.core.api.Assertions.assertThatThrownBy
+import org.hibernate.exception.ConstraintViolationException
 import org.junit.jupiter.api.Test
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest
 import org.springframework.test.context.TestConstructor
@@ -23,5 +25,16 @@ class MemberRepositoryTest(private val memberRepository: MemberRepository, priva
         assertThat(member.id).isGreaterThan(0L)
 
         entityManager.flush()
+    }
+
+    @Test
+    fun duplicateEmail() {
+        val member1 = Member.register(createMemberRegisterRequest(), createPasswordEncoder())
+
+        entityManager.persist(member1)
+
+        val member2 = Member.register(createMemberRegisterRequest(), createPasswordEncoder())
+
+        assertThatThrownBy { entityManager.persist(member2) }.isInstanceOf(ConstraintViolationException::class.java)
     }
 }
