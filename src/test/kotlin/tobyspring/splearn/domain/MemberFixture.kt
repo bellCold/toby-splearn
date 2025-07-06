@@ -3,7 +3,7 @@ package tobyspring.splearn.domain
 class MemberFixture {
     companion object {
         fun createMemberRegisterRequest(email: String): MemberRegisterRequest {
-            return MemberRegisterRequest(email, "Toby", "secret")
+            return MemberRegisterRequest(email, "bellCold", "secret")
         }
 
         fun createMemberRegisterRequest() = createMemberRegisterRequest("toby@splearn.com")
