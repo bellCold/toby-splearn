@@ -1,8 +1,9 @@
 package tobyspring.splearn.application.provided
 
-import jakarta.validation.ConstraintViolationException
+import jakarta.persistence.EntityManager
 import org.assertj.core.api.Assertions.assertThat
 import org.assertj.core.api.Assertions.assertThatThrownBy
+import org.hibernate.exception.ConstraintViolationException
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.context.annotation.Import
 import org.springframework.test.context.TestConstructor
@@ -18,7 +19,7 @@ import kotlin.test.Test
 @Transactional
 @Import(SplearnTestConfiguration::class)
 @TestConstructor(autowireMode = TestConstructor.AutowireMode.ALL)
-class MemberRegisterTest(private val memberRegister: MemberRegister) {
+class MemberRegisterTest(private val memberRegister: MemberRegister, private val entityManager: EntityManager) {
     @Test
     fun register() {
         val member = memberRegister.register(createMemberRegisterRequest())
@@ -42,6 +43,20 @@ class MemberRegisterTest(private val memberRegister: MemberRegister) {
 
         assertThatThrownBy {
             memberRegister.register(member)
-        }.isInstanceOf(ConstraintViolationException::class.java)
+        }.isInstanceOf(IllegalArgumentException::class.java)
+    }
+
+    @Test
+    fun activate() {
+        var member = memberRegister.register(createMemberRegisterRequest())
+
+        entityManager.flush()
+        entityManager.clear()
+
+        member = memberRegister.activate(member.id)
+
+        entityManager.flush()
+
+        assertThat(member.status).isEqualTo(MemberStatus.ACTIVE)
     }
 }

@@ -7,4 +7,5 @@ import tobyspring.splearn.domain.Member
 interface MemberRepository : Repository<Member, Long> {
     fun save(member: Member): Member
     fun findByEmail(email: Email): Member?
+    fun findById(memberId: Long): Member?
 }
