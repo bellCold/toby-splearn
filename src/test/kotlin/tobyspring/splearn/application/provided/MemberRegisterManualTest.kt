@@ -1,4 +1,3 @@
-/*
 package tobyspring.splearn.application.provided
 
 import org.assertj.core.api.Assertions.assertThat
@@ -22,7 +21,7 @@ class MemberRegisterManualTest {
         val register = MemberModifyService(
             memberRepository = MemberRepositoryStub(),
             emailSender = EmailSenderStub(),
-            memberFinder = MemberFinder(),
+            memberFinder = MemberFinderStub(),
             passwordEncoder = MemberFixture.createPasswordEncoder()
         )
 
@@ -38,6 +37,7 @@ class MemberRegisterManualTest {
         val register = MemberModifyService(
             memberRepository = MemberRepositoryStub(),
             emailSender = emailSenderMock,
+            memberFinder = MemberFinderStub(),
             passwordEncoder = MemberFixture.createPasswordEncoder()
         )
 
@@ -52,11 +52,13 @@ class MemberRegisterManualTest {
 
     @Test
     fun registerTestMockito() {
-        val emailSenderMock = mock(EmailSender::class.java)
+        // Use a custom EmailSender implementation instead of Mockito mock
+        val emailSenderCaptor = EmailSenderCaptor()
         val register = MemberModifyService(
             memberRepository = MemberRepositoryStub(),
-            emailSender = emailSenderMock,
-            passwordEncoder = MemberFixture.createPasswordEncoder()
+            emailSender = emailSenderCaptor,
+            passwordEncoder = MemberFixture.createPasswordEncoder(),
+            memberFinder = MemberFinderStub()
         )
 
         val member = register.register(MemberFixture.createMemberRegisterRequest())
@@ -64,12 +66,17 @@ class MemberRegisterManualTest {
         assertThat(member.id).isNotNull()
         assertThat(member.status).isEqualTo(MemberStatus.PENDING)
 
-        Mockito.verify(emailSenderMock).send(eq(member.email), anyString(), anyString())
+        // Verify that send was called
+        assertThat(emailSenderCaptor.wasCalled).isTrue()
+        assertThat(emailSenderCaptor.lastEmail).isEqualTo(member.email)
     }
 
     class MemberFinderStub : MemberFinder {
         override fun find(memberId: Long): Member {
-            return MemberFixture.createMemberRegisterRequest()
+            return Member.register(
+                MemberFixture.createMemberRegisterRequest(),
+                passwordEncoder = MemberFixture.createPasswordEncoder()
+            )
         }
     }
 
@@ -90,7 +97,7 @@ class MemberRegisterManualTest {
 
     class EmailSenderStub : EmailSender {
         override fun send(email: Email, subject: String, body: String) {
-            TODO("Not yet implemented")
+            // Do nothing - stub implementation
         }
     }
 
@@ -101,4 +108,18 @@ class MemberRegisterManualTest {
             tos.add(email)
         }
     }
-}*/
+
+    class EmailSenderCaptor : EmailSender {
+        var wasCalled = false
+        var lastEmail: Email? = null
+        var lastSubject: String? = null
+        var lastBody: String? = null
+
+        override fun send(email: Email, subject: String, body: String) {
+            wasCalled = true
+            lastEmail = email
+            lastSubject = subject
+            lastBody = body
+        }
+    }
+}
