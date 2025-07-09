@@ -2,10 +2,6 @@ package tobyspring.splearn.application.provided
 
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
-import org.mockito.ArgumentMatchers.anyString
-import org.mockito.ArgumentMatchers.eq
-import org.mockito.Mockito
-import org.mockito.Mockito.mock
 import org.springframework.test.util.ReflectionTestUtils
 import tobyspring.splearn.application.MemberModifyService
 import tobyspring.splearn.application.required.EmailSender
