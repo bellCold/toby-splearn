@@ -17,5 +17,9 @@ class MemberFixture {
                 return encode(password) == passwordHash
             }
         }
+
+        fun createMemberUpdateRequest(nickname: String, profileAddress: String, introduction: String): MemberInfoUpdateRequest {
+            return MemberInfoUpdateRequest(nickname, profileAddress, introduction)
+        }
     }
 }

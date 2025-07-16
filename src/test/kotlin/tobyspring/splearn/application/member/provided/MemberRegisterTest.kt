@@ -25,6 +25,7 @@ class MemberRegisterTest(private val memberRegister: MemberRegister, private val
 
         assertThat(member.id).isNotNull()
         assertThat(member.status).isEqualTo(MemberStatus.PENDING)
+        assertThat(member.detail.registeredAt).isNotNull()
     }
 
     @Test

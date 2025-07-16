@@ -5,6 +5,7 @@ import org.assertj.core.api.Assertions.assertThatThrownBy
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import tobyspring.splearn.domain.member.MemberFixture.Companion.createMemberRegisterRequest
+import tobyspring.splearn.domain.member.MemberFixture.Companion.createMemberUpdateRequest
 import tobyspring.splearn.domain.member.MemberFixture.Companion.createPasswordEncoder
 
 class MemberTest {
@@ -24,9 +25,11 @@ class MemberTest {
 
     @Test
     fun activate() {
+        assertThat(member.detail.activatedAt).isNull()
         member.activate()
 
         assertThat(member.status).isEqualTo(MemberStatus.ACTIVE)
+        assertThat(member.detail.activatedAt).isNotNull()
     }
 
     @Test
@@ -43,6 +46,7 @@ class MemberTest {
         member.deactivate()
 
         assertThat(member.status).isEqualTo(MemberStatus.DEACTIVATED)
+        assertThat(member.detail.deactivatedAt).isNotNull()
     }
 
     @Test
@@ -91,8 +95,20 @@ class MemberTest {
     @Test
     fun invalidEmail() {
         assertThatThrownBy {
-            Member.register(createMemberRegisterRequest("invalidEmail") , passwordEncoder)
+            Member.register(createMemberRegisterRequest("invalidEmail"), passwordEncoder)
         }.isInstanceOf(IllegalArgumentException::class.java)
+    }
+
+    @Test
+    fun updateMember() {
+        member.activate()
+
+        val request = createMemberUpdateRequest("changeNickname", "profileaddress", "introduction")
+        member.updateInfo(request)
+
+        assertThat(member.nickname).isEqualTo(request.nickname)
+        assertThat(member.detail.profile!!.address).isEqualTo(request.profileAddress)
+        assertThat(member.detail.introduction).isEqualTo(request.introduction)
     }
 }
 

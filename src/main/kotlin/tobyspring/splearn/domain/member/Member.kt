@@ -1,9 +1,6 @@
 package tobyspring.splearn.domain.member
 
-import jakarta.persistence.Entity
-import jakarta.persistence.EnumType
-import jakarta.persistence.Enumerated
-import jakarta.persistence.OneToOne
+import jakarta.persistence.*
 import org.hibernate.annotations.NaturalId
 import org.hibernate.annotations.NaturalIdCache
 import tobyspring.splearn.domain.AbstractEntity
@@ -18,15 +15,16 @@ class Member(
     var passwordHash: String,
     @Enumerated(EnumType.STRING)
     var status: MemberStatus = MemberStatus.PENDING,
-    @OneToOne
-    val detail: MemberDetail? = null,
+    @OneToOne(fetch = FetchType.LAZY, cascade = [CascadeType.ALL])
+    val detail: MemberDetail,
 ) : AbstractEntity() {
     companion object {
         fun register(memberRegisterRequest: MemberRegisterRequest, passwordEncoder: PasswordEncoder): Member {
             return Member(
                 email = Email(memberRegisterRequest.email),
                 nickname = memberRegisterRequest.nickname,
-                passwordHash = passwordEncoder.encode(memberRegisterRequest.password)
+                passwordHash = passwordEncoder.encode(memberRegisterRequest.password),
+                detail = MemberDetail.create(),
             )
         }
     }
@@ -35,12 +33,14 @@ class Member(
         require(status == MemberStatus.PENDING) { "PENDING 상태가 아닙니다." }
 
         this.status = MemberStatus.ACTIVE
+        this.detail.activate()
     }
 
     fun deactivate() {
         require(status == MemberStatus.ACTIVE) { "ACTIVE 상태가 아닙니다." }
 
         this.status = MemberStatus.DEACTIVATED
+        this.detail.deactivate()
     }
 
     fun verifyPassword(password: String, passwordEncoder: PasswordEncoder): Boolean {
@@ -49,6 +49,11 @@ class Member(
 
     fun changeNickname(newNickname: String) {
         this.nickname = newNickname
+    }
+
+    fun updateInfo(memberInfoUpdateRequest: MemberInfoUpdateRequest) {
+        this.nickname = memberInfoUpdateRequest.nickname
+        this.detail.updateInfo(memberInfoUpdateRequest)
     }
 
     fun changePassword(password: String, passwordEncoder: PasswordEncoder) {

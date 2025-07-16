@@ -10,6 +10,7 @@ import org.springframework.test.context.TestConstructor
 import tobyspring.splearn.domain.member.Member
 import tobyspring.splearn.domain.member.MemberFixture.Companion.createMemberRegisterRequest
 import tobyspring.splearn.domain.member.MemberFixture.Companion.createPasswordEncoder
+import tobyspring.splearn.domain.member.MemberStatus
 
 @DataJpaTest
 @TestConstructor(autowireMode = TestConstructor.AutowireMode.ALL)
@@ -25,6 +26,11 @@ class MemberRepositoryTest(private val memberRepository: MemberRepository, priva
         assertThat(member.id).isGreaterThan(0L)
 
         entityManager.flush()
+        entityManager.clear()
+
+        val found = memberRepository.findById(member.id)!!
+        assertThat(found.status).isEqualTo(MemberStatus.PENDING)
+        assertThat(found.detail.registeredAt).isNotNull()
     }
 
     @Test
