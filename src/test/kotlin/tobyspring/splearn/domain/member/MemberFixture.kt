@@ -1,4 +1,4 @@
-package tobyspring.splearn.domain
+package tobyspring.splearn.domain.member
 
 class MemberFixture {
     companion object {

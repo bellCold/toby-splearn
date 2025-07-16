@@ -1,4 +1,4 @@
-package tobyspring.splearn.application.required
+package tobyspring.splearn.application.member.required
 
 import jakarta.persistence.EntityManager
 import org.assertj.core.api.Assertions.assertThat
@@ -7,9 +7,9 @@ import org.hibernate.exception.ConstraintViolationException
 import org.junit.jupiter.api.Test
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest
 import org.springframework.test.context.TestConstructor
-import tobyspring.splearn.domain.Member
-import tobyspring.splearn.domain.MemberFixture.Companion.createMemberRegisterRequest
-import tobyspring.splearn.domain.MemberFixture.Companion.createPasswordEncoder
+import tobyspring.splearn.domain.member.Member
+import tobyspring.splearn.domain.member.MemberFixture.Companion.createMemberRegisterRequest
+import tobyspring.splearn.domain.member.MemberFixture.Companion.createPasswordEncoder
 
 @DataJpaTest
 @TestConstructor(autowireMode = TestConstructor.AutowireMode.ALL)

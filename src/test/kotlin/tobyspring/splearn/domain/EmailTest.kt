@@ -2,6 +2,7 @@ package tobyspring.splearn.domain
 
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
+import tobyspring.splearn.domain.shared.Email
 
 class EmailTest {
     @Test

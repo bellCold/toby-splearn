@@ -2,10 +2,10 @@ package tobyspring.splearn
 
 import org.springframework.boot.test.context.TestConfiguration
 import org.springframework.context.annotation.Bean
-import tobyspring.splearn.application.required.EmailSender
-import tobyspring.splearn.domain.Email
-import tobyspring.splearn.domain.MemberFixture
-import tobyspring.splearn.domain.PasswordEncoder
+import tobyspring.splearn.application.member.required.EmailSender
+import tobyspring.splearn.domain.member.MemberFixture
+import tobyspring.splearn.domain.member.PasswordEncoder
+import tobyspring.splearn.domain.shared.Email
 
 @TestConfiguration
 class SplearnTestConfiguration {
@@ -15,7 +15,6 @@ class SplearnTestConfiguration {
             override fun send(email: Email, subject: String, body: String) {
                 println("send email: $email, $subject, $body")
             }
-
         }
     }
 

@@ -1,4 +1,4 @@
-package tobyspring.splearn.application.provided
+package tobyspring.splearn.application.member.provided
 
 import jakarta.persistence.EntityManager
 import org.assertj.core.api.Assertions.assertThat
@@ -8,10 +8,10 @@ import org.springframework.context.annotation.Import
 import org.springframework.test.context.TestConstructor
 import org.springframework.transaction.annotation.Transactional
 import tobyspring.splearn.SplearnTestConfiguration
-import tobyspring.splearn.domain.DuplicateEmailException
-import tobyspring.splearn.domain.MemberFixture.Companion.createMemberRegisterRequest
-import tobyspring.splearn.domain.MemberRegisterRequest
-import tobyspring.splearn.domain.MemberStatus
+import tobyspring.splearn.domain.member.DuplicateEmailException
+import tobyspring.splearn.domain.member.MemberFixture.Companion.createMemberRegisterRequest
+import tobyspring.splearn.domain.member.MemberRegisterRequest
+import tobyspring.splearn.domain.member.MemberStatus
 import kotlin.test.Test
 
 @SpringBootTest

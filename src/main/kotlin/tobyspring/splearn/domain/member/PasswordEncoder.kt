@@ -1,4 +1,4 @@
-package tobyspring.splearn.domain
+package tobyspring.splearn.domain.member
 
 interface PasswordEncoder {
     fun encode(password: String): String

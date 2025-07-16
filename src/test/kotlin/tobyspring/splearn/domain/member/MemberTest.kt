@@ -1,11 +1,11 @@
-package tobyspring.splearn.domain
+package tobyspring.splearn.domain.member
 
 import org.assertj.core.api.Assertions.assertThat
 import org.assertj.core.api.Assertions.assertThatThrownBy
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
-import tobyspring.splearn.domain.MemberFixture.Companion.createMemberRegisterRequest
-import tobyspring.splearn.domain.MemberFixture.Companion.createPasswordEncoder
+import tobyspring.splearn.domain.member.MemberFixture.Companion.createMemberRegisterRequest
+import tobyspring.splearn.domain.member.MemberFixture.Companion.createPasswordEncoder
 
 class MemberTest {
     lateinit var member: Member

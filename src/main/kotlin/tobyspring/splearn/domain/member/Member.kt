@@ -1,21 +1,26 @@
-package tobyspring.splearn.domain
+package tobyspring.splearn.domain.member
 
-import jakarta.persistence.*
+import jakarta.persistence.Entity
+import jakarta.persistence.EnumType
+import jakarta.persistence.Enumerated
+import jakarta.persistence.OneToOne
 import org.hibernate.annotations.NaturalId
 import org.hibernate.annotations.NaturalIdCache
+import tobyspring.splearn.domain.AbstractEntity
+import tobyspring.splearn.domain.shared.Email
 
 @Entity
 @NaturalIdCache
 class Member(
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    val id: Long = 0L,
-    val email: Email,
     @NaturalId
+    val email: Email,
     var nickname: String,
     var passwordHash: String,
     @Enumerated(EnumType.STRING)
     var status: MemberStatus = MemberStatus.PENDING,
-) {
+    @OneToOne
+    val detail: MemberDetail? = null,
+) : AbstractEntity() {
     companion object {
         fun register(memberRegisterRequest: MemberRegisterRequest, passwordEncoder: PasswordEncoder): Member {
             return Member(

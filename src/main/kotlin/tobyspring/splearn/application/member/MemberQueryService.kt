@@ -1,10 +1,10 @@
-package tobyspring.splearn.application
+package tobyspring.splearn.application.member
 
 import org.springframework.stereotype.Service
 import org.springframework.validation.annotation.Validated
-import tobyspring.splearn.application.provided.MemberFinder
-import tobyspring.splearn.application.required.MemberRepository
-import tobyspring.splearn.domain.Member
+import tobyspring.splearn.application.member.provided.MemberFinder
+import tobyspring.splearn.application.member.required.MemberRepository
+import tobyspring.splearn.domain.member.Member
 
 @Service
 @Validated
