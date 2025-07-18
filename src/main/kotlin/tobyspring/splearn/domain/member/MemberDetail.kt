@@ -1,5 +1,6 @@
 package tobyspring.splearn.domain.member
 
+import jakarta.persistence.Column
 import jakarta.persistence.Entity
 import org.springframework.util.Assert
 import tobyspring.splearn.domain.AbstractEntity
@@ -8,6 +9,7 @@ import java.time.LocalDateTime
 @Entity
 class MemberDetail(
     var profile: Profile? = null,
+    @Column(columnDefinition = "TEXT")
     var introduction: String? = null,
     val registeredAt: LocalDateTime,
     var activatedAt: LocalDateTime? = null,

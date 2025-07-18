@@ -47,11 +47,9 @@ class Member(
         return passwordEncoder.matches(password, this.passwordHash)
     }
 
-    fun changeNickname(newNickname: String) {
-        this.nickname = newNickname
-    }
-
     fun updateInfo(memberInfoUpdateRequest: MemberInfoUpdateRequest) {
+        require(status == MemberStatus.ACTIVE) { "ACTIVE 상태가 아닙니다." }
+
         this.nickname = memberInfoUpdateRequest.nickname
         this.detail.updateInfo(memberInfoUpdateRequest)
     }

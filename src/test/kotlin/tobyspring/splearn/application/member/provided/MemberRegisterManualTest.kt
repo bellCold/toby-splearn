@@ -10,6 +10,7 @@ import tobyspring.splearn.domain.shared.Email
 import tobyspring.splearn.domain.member.Member
 import tobyspring.splearn.domain.member.MemberFixture
 import tobyspring.splearn.domain.member.MemberStatus
+import tobyspring.splearn.domain.member.Profile
 
 class MemberRegisterManualTest {
     @Test
@@ -87,6 +88,10 @@ class MemberRegisterManualTest {
         }
 
         override fun findById(memberId: Long): Member? {
+            return null
+        }
+
+        override fun findByProfile(profile: Profile): Member? {
             return null
         }
     }

@@ -65,14 +65,6 @@ class MemberTest {
     }
 
     @Test
-    fun changeNickname() {
-        assertThat(member.nickname).isEqualTo("bellCold")
-        member.changeNickname("changeNickname")
-
-        assertThat(member.nickname).isEqualTo("changeNickname")
-    }
-
-    @Test
     fun changePassword() {
         member.changePassword("verySecret", passwordEncoder)
 
@@ -100,7 +92,7 @@ class MemberTest {
     }
 
     @Test
-    fun updateMember() {
+    fun updateInfo() {
         member.activate()
 
         val request = createMemberUpdateRequest("changeNickname", "profileaddress", "introduction")
@@ -111,4 +103,3 @@ class MemberTest {
         assertThat(member.detail.introduction).isEqualTo(request.introduction)
     }
 }
-
