@@ -1,5 +1,7 @@
 package tobyspring.splearn.domain.member
 
+import org.springframework.test.util.ReflectionTestUtils
+
 class MemberFixture {
     companion object {
         fun createMemberRegisterRequest(email: String): MemberRegisterRequest {
@@ -21,5 +23,16 @@ class MemberFixture {
         fun createMemberUpdateRequest(nickname: String, profileAddress: String, introduction: String): MemberInfoUpdateRequest {
             return MemberInfoUpdateRequest(nickname, profileAddress, introduction)
         }
+
+        fun createMember(id: Long) : Member{
+            val member = Member.register(createMemberRegisterRequest(), createPasswordEncoder())
+            ReflectionTestUtils.setField(member, "id", id)
+            return member
+        }
+
+        fun createMember(email: String): Member {
+            return Member.register(createMemberRegisterRequest(email), createPasswordEncoder())
+        }
+
     }
 }
