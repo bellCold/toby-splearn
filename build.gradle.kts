@@ -33,6 +33,7 @@ dependencies {
     testImplementation("org.jetbrains.kotlin:kotlin-test-junit5")
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
     testImplementation("org.junit-pioneer:junit-pioneer:2.3.0")
+    testImplementation("com.tngtech.archunit:archunit-junit5:1.4.1")
 }
 
 kotlin {
