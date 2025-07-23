@@ -15,7 +15,7 @@ import tobyspring.splearn.domain.member.MemberFixture
 import tobyspring.splearn.domain.member.MemberFixture.Companion.createMemberRegisterRequest
 
 @WebMvcTest(MemberApi::class)
-class MembeApiWebMvcTest {
+class MemberApiWebMvcTest {
     @MockitoBean
     private lateinit var memberRegister: MemberRegister
     @Autowired private lateinit var mvcTester: MockMvcTester
